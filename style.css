@@ -28,7 +28,31 @@ input {
   border-radius: 8px;
   border: none;
 }
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
+.container {
+  flex: 1;
+}
+
+.footer {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+.footer a {
+  color: #00ffcc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
 /* BOARD */
 .board {
   display: grid;
