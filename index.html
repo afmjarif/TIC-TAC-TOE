@@ -1,62 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Tic Tac Toe Pro</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe Pro</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>🎮 Tic Tac Toe Pro</h1>
+<h1>🎮 Tic Tac Toe</h1>
 
-<!-- MODE SELECT -->
-<div class="card">
-  <h3>Select Game Mode</h3>
+<div class="container">
 
-  <select id="mode">
-    <option value="">-- Choose Mode --</option>
-    <option value="pvp">Player vs Player</option>
-    <option value="cpu-easy">Player vs Computer (Easy)</option>
-    <option value="cpu-medium">Player vs Computer (Medium)</option>
-    <option value="cpu-hard">Player vs Computer (Hard)</option>
-  </select>
+<!-- MODE SCREEN -->
+<div id="modeScreen" class="screen active">
+  <h3>Choose Mode</h3>
+  <button onclick="selectMode('multi')">Multiplayer</button>
+  <button onclick="selectMode('cpu')">Player vs Computer</button>
 </div>
 
-<!-- NAME INPUT AREA (HIDDEN INITIALLY) -->
-<div class="card hidden" id="nameBox">
-
-  <h3>Enter Player Names</h3>
-
-  <input id="player1" placeholder="Player 1 Name">
-
-  <input id="player2" placeholder="Player 2 Name (only PvP)">
+<!-- NAME SCREEN -->
+<div id="nameScreen" class="screen">
+  <h3 id="title"></h3>
+  <div id="inputs"></div>
+  <button onclick="startGame()">Start Game 🚀</button>
 </div>
 
-<!-- START BUTTON -->
-<div class="startWrap">
-  <button id="startBtn" disabled>START GAME 🎯</button>
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen">
+
+  <h3 id="match"></h3>
+  <div id="status"></div>
+
+  <div class="board" id="board"></div>
+
+  <button onclick="resetGame()">New Game</button>
+  <button onclick="goHome()">🏠 Home</button>
+
 </div>
 
-<!-- GAME INFO -->
-<h2 id="matchInfo"></h2>
-<h2 id="status"></h2>
-
-<!-- SCORE -->
-<div class="scoreboard">
-  ❌ X: <span id="xScore">0</span> |
-  ⭕ O: <span id="oScore">0</span> |
-  🤝 Draws: <span id="dScore">0</span>
 </div>
 
-<!-- BOARD -->
-<div id="board">
-  <div id="winLine"></div>
-</div>
-
-<button id="restartBtn">🔄 Restart</button>
-
-<!-- SOUNDS -->
-<audio id="clickSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
-<audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+<footer>
+Tic Tac Toe • Hosted by afm_jarif
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="script.js"></script>
