@@ -36,7 +36,8 @@ This project demonstrates core concepts of **game logic, web development, and da
 
 ## 📸 Screenshots
 
-> *(Add screenshots here for better presentation)*
+> *![A03A4A94-AC69-47DC-AD8E-82EB0E114715_1_201_a](https://github.com/user-attachments/assets/e2e26ff2-9ac3-4781-a407-4ef4778be795)
+*
 
 ---
 
