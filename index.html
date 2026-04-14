@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe Pro</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>🎮 Tic Tac Toe</h1>
+
+<div class="container">
+
+<!-- MODE SCREEN -->
+<div id="modeScreen" class="screen active">
+  <h3>Choose Mode</h3>
+  <button onclick="selectMode('multi')">Multiplayer</button>
+  <button onclick="selectMode('cpu')">Player vs Computer</button>
+</div>
+
+<!-- NAME SCREEN -->
+<div id="nameScreen" class="screen">
+  <h3 id="title"></h3>
+  <div id="inputs"></div>
+  <button onclick="startGame()">Start Game 🚀</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen">
+
+  <h3 id="match"></h3>
+  <div id="status"></div>
+
+  <div class="board" id="board"></div>
+
+  <button onclick="resetGame()">New Game</button>
+  <button onclick="goHome()">🏠 Home</button>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  Tic Tac Toe Intelligence Tester • Hosted by 
+  <a href="https://github.com/afmjarif" target="_blank">afm_jarif</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
