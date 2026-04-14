@@ -1,239 +1,184 @@
-const boardDiv = document.getElementById("board");
-const statusText = document.getElementById("status");
-const matchInfo = document.getElementById("matchInfo");
+let mode="";
+let p1="Player X", p2="Player O";
+let board=[];
+let current="X";
+let active=false;
 
-const startBtn = document.getElementById("startBtn");
-const restartBtn = document.getElementById("restartBtn");
-const modeSelect = document.getElementById("mode");
-
-const clickSound = document.getElementById("clickSound");
-const winSound = document.getElementById("winSound");
-
-const winLine = document.getElementById("winLine");
-
-const xScoreEl = document.getElementById("xScore");
-const oScoreEl = document.getElementById("oScore");
-const dScoreEl = document.getElementById("dScore");
-
-let board = Array(9).fill("");
-let currentPlayer = "X";
-let gameActive = false;
-
-let player1 = "Player 1";
-let player2 = "Player 2";
-
-let score = { x: 0, o: 0, d: 0 };
-
-const winPatterns = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
+const win=[
+[0,1,2],[3,4,5],[6,7,8],
+[0,3,6],[1,4,7],[2,5,8],
+[0,4,8],[2,4,6]
 ];
 
-// 🎯 START GAME
-startBtn.onclick = () => {
-  player1 = document.getElementById("player1").value || "Player 1";
+// SCREEN SWITCH
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-  if (modeSelect.value === "pvp") {
-    player2 = document.getElementById("player2").value || "Player 2";
-  } else {
-    player2 = "Computer";
-  }
+// MODE
+function selectMode(m){
+  mode=m;
+  show("nameScreen");
 
-  resetGame(true);
+  document.getElementById("title").innerText =
+    m==="multi" ? "Enter Player Names" : "Enter Your Name";
 
-  currentPlayer = Math.random() < 0.5 ? "X" : "O";
+  document.getElementById("inputs").innerHTML =
+    m==="multi"
+    ? `<input id="a" placeholder="Player 1">
+       <input id="b" placeholder="Player 2">`
+    : `<input id="a" placeholder="Your Name">`;
+}
 
-  matchInfo.textContent = `${player1} (X) vs ${player2} (O)`;
-  statusText.textContent = `${getName()} starts!`;
+// START GAME
+function startGame(){
+  p1=document.getElementById("a").value||"Player X";
+  p2=mode==="multi"
+    ? (document.getElementById("b").value||"Player O")
+    : "Computer";
 
-  gameActive = true;
+  board=Array(9).fill("");
+  current="X";
+  active=true;
 
-  if (isCPU() && currentPlayer === "O") {
-    setTimeout(cpuMove, 500);
-  }
-};
+  show("gameScreen");
 
-// 🧱 BOARD
-function createBoard() {
-  boardDiv.innerHTML = "";
-  board.forEach((_, i) => {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    cell.dataset.index = i;
-    cell.onclick = handleMove;
-    boardDiv.appendChild(cell);
+  document.getElementById("match").innerText =
+    `${p1} (X) VS ${p2} (O)`;
+
+  draw();
+}
+
+// DRAW BOARD
+function draw(){
+  const b=document.getElementById("board");
+  b.innerHTML="";
+
+  document.querySelector(".winLine")?.remove();
+
+  board.forEach((v,i)=>{
+    const d=document.createElement("div");
+    d.className="cell";
+    d.innerText=v;
+    d.onclick=()=>move(i,d);
+    b.appendChild(d);
   });
 
-  winLine.style.width = "0px";
+  update();
 }
 
-// 🎮 MOVE
-function handleMove(e) {
-  const i = e.target.dataset.index;
+// MOVE
+function move(i,el){
+  if(!active||board[i]) return;
 
-  if (!gameActive || board[i]) return;
+  board[i]=current;
+  el.innerText=current;
 
-  playMove(i, currentPlayer);
-  clickSound.play();
+  let combo=getWin();
 
-  if (checkWin(currentPlayer)) {
-    endGame(`${getName()} wins! 🏆`, currentPlayer);
+  if(combo){
+    drawWinLine(combo);
+    winEffect();
+    document.getElementById("status").innerHTML =
+      `<div class="winText">${current==="X"?p1:p2} Wins! 🎉</div>`;
+    active=false;
     return;
   }
 
-  if (!board.includes("")) {
-    endGame("Draw 🤝", "d");
+  if(!board.includes("")){
+    document.getElementById("status").innerText="Draw 🤝";
+    active=false;
     return;
   }
 
-  switchPlayer();
+  current=current==="X"?"O":"X";
+  update();
 
-  if (isCPU() && currentPlayer === "O") {
-    setTimeout(cpuMove, 300);
+  if(mode==="cpu" && current==="O"){
+    setTimeout(cpu,400);
   }
 }
 
-// 🎯 MOVE
-function playMove(i, p) {
-  board[i] = p;
-  document.querySelectorAll(".cell")[i].textContent = p;
+// CPU
+function cpu(){
+  let empty=[];
+  board.forEach((v,i)=>!v&&empty.push(i));
+  let pick=empty[Math.floor(Math.random()*empty.length)];
+  move(pick,document.querySelectorAll(".cell")[pick]);
 }
 
-// 👤 NAME
-function getName() {
-  return currentPlayer === "X" ? player1 : player2;
-}
-
-// 🔁 SWITCH
-function switchPlayer() {
-  currentPlayer = currentPlayer === "X" ? "O" : "X";
-  statusText.textContent = `${getName()}'s turn`;
-}
-
-// 🏆 WIN CHECK + LINE
-function checkWin(p) {
-  for (let pattern of winPatterns) {
-    if (pattern.every(i => board[i] === p)) {
-
-      pattern.forEach(i => {
-        document.querySelectorAll(".cell")[i].classList.add("win");
-      });
-
-      drawWinLine(pattern);
-      return true;
+// WIN CHECK
+function getWin(){
+  for(let w of win){
+    let [a,b,c]=w;
+    if(board[a]&&board[a]===board[b]&&board[a]===board[c]){
+      return w;
     }
   }
-  return false;
+  return null;
 }
 
-// 🎯 WIN LINE FIXED
-function drawWinLine(pattern) {
-  const cells = document.querySelectorAll(".cell");
-  const boardRect = boardDiv.getBoundingClientRect();
+// WIN LINE
+function drawWinLine(combo){
+  const boardEl=document.getElementById("board");
+  const cells=document.querySelectorAll(".cell");
 
-  const first = cells[pattern[0]].getBoundingClientRect();
-  const last = cells[pattern[2]].getBoundingClientRect();
+  const a=cells[combo[0]].getBoundingClientRect();
+  const c=cells[combo[2]].getBoundingClientRect();
+  const bRect=boardEl.getBoundingClientRect();
 
-  const x1 = first.left + first.width / 2 - boardRect.left;
-  const y1 = first.top + first.height / 2 - boardRect.top;
+  const x1=a.left+a.width/2-bRect.left;
+  const y1=a.top+a.height/2-bRect.top;
 
-  const x2 = last.left + last.width / 2 - boardRect.left;
-  const y2 = last.top + last.height / 2 - boardRect.top;
+  const x2=c.left+c.width/2-bRect.left;
+  const y2=c.top+c.height/2-bRect.top;
 
-  const length = Math.hypot(x2 - x1, y2 - y1);
-  const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+  const len=Math.hypot(x2-x1,y2-y1);
+  const angle=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
 
-  winLine.style.width = length + "px";
-  winLine.style.transform = `translate(${x1}px, ${y1}px) rotate(${angle}deg)`;
+  const line=document.createElement("div");
+  line.className="winLine";
+
+  line.style.width=len+"px";
+  line.style.left=x1+"px";
+  line.style.top=y1+"px";
+  line.style.transform=`rotate(${angle}deg)`;
+
+  boardEl.appendChild(line);
 }
 
-// 🔊 END GAME + SCORE + 🎉 CONFETTI
-function endGame(msg, type) {
-  gameActive = false;
-  statusText.textContent = msg;
+// WIN EFFECT
+function winEffect(){
+  document.getElementById("gameScreen").classList.add("shake");
 
-  winSound.play();
+  setTimeout(()=>{
+    document.getElementById("gameScreen").classList.remove("shake");
+  },500);
 
-  if (type === "X") score.x++;
-  else if (type === "O") score.o++;
-  else score.d++;
-
-  updateScore();
-
-  if (type === "X" || type === "O") {
-    launchConfetti();
-  }
+  confetti({
+    particleCount: 150,
+    spread: 90,
+    origin: { y: 0.6 }
+  });
 }
 
-// 📊 SCORE
-function updateScore() {
-  xScoreEl.textContent = score.x;
-  oScoreEl.textContent = score.o;
-  dScoreEl.textContent = score.d;
+// UPDATE
+function update(){
+  document.getElementById("status").innerText=
+  `${current==="X"?p1:p2}'s turn (${current})`;
 }
 
-// 🤖 CPU (simple)
-function isCPU() {
-  return modeSelect.value !== "pvp";
+// RESET
+function resetGame(){
+  startGame();
 }
 
-function cpuMove() {
-  let empty = board.map((v,i)=>v===""?i:null).filter(v=>v!==null);
-  let move = empty[Math.floor(Math.random()*empty.length)];
-
-  playMove(move, "O");
-
-  clickSound.play();
-
-  if (checkWin("O")) {
-    endGame("Computer wins 🤖", "O");
-    return;
-  }
-
-  if (!board.includes("")) {
-    endGame("Draw 🤝", "d");
-    return;
-  }
-
-  switchPlayer();
-}
-
-// 🔄 RESTART FIXED
-restartBtn.onclick = () => {
-  resetGame(false);
-  gameActive = true;
-  statusText.textContent = `${getName()}'s turn`;
-};
-
-// ♻️ RESET
-function resetGame(full) {
-  board = Array(9).fill("");
-  createBoard();
-  winLine.style.width = "0px";
-
-  if (full) {
-    statusText.textContent = "";
-  }
-}
-
-// 🎉 CONFETTI
-function launchConfetti() {
-  const duration = 1500;
-  const end = Date.now() + duration;
-
-  (function frame() {
-    confetti({
-      particleCount: 6,
-      spread: 80,
-      origin: {
-        x: Math.random(),
-        y: Math.random() - 0.2
-      }
-    });
-
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    }
-  })();
+// HOME
+function goHome(){
+  active=false;
+  board=[];
+  current="X";
+  document.querySelector(".winLine")?.remove();
+  show("modeScreen");
 }
