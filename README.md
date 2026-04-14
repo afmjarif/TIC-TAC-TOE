@@ -1,5 +1,7 @@
 # [🎮 Tic Tac Toe Game](https://afmjarif.github.io/TIC-TAC-TOE/)
 
+> ![A03A4A94-AC69-47DC-AD8E-82EB0E114715_1_201_a](https://github.com/user-attachments/assets/e2e26ff2-9ac3-4781-a407-4ef4778be795)
+
 A full-stack **Tic Tac Toe web application** built using **Python (Flask), HTML, CSS, JavaScript, and MySQL**.
 This project demonstrates core concepts of **game logic, web development, and database integration**.
 
@@ -16,7 +18,7 @@ This project demonstrates core concepts of **game logic, web development, and da
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Tools
 
 **Frontend**
 
@@ -31,13 +33,6 @@ This project demonstrates core concepts of **game logic, web development, and da
 **Database**
 
 * MySQL (via XAMPP)
-
----
-
-## 📸 Screenshots
-
-> *![A03A4A94-AC69-47DC-AD8E-82EB0E114715_1_201_a](https://github.com/user-attachments/assets/e2e26ff2-9ac3-4781-a407-4ef4778be795)
-*
 
 ---
 
@@ -154,10 +149,9 @@ This project is open-source and available under the MIT License.
 
 ---
 
-## 👨‍💻 Author
+## 👨‍💻 [Author](https://github.com/afmjarif)
 
-**AFM Jarif**
-
+**AFM JARIF**
 * GitHub: https://github.com/afmjarif
 
 ---
