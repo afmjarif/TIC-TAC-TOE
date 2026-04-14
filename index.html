@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic Tac Toe Pro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🎮 Tic Tac Toe Pro</h1>
+
+<div class="controls">
+  <select id="mode">
+    <option value="pvp">Player vs Player</option>
+    <option value="cpu-easy">Player vs Computer (Easy)</option>
+    <option value="cpu-medium">Player vs Computer (Medium)</option>
+    <option value="cpu-hard">Player vs Computer (Hard)</option>
+  </select>
+
+  <input id="player1" placeholder="Player 1 Name">
+  <input id="player2" placeholder="Player 2 Name (PvP only)">
+</div>
+
+<div class="startWrap">
+  <button id="startBtn">START GAME 🎯</button>
+</div>
+
+<h2 id="matchInfo"></h2>
+<h2 id="status"></h2>
+
+<div class="scoreboard">
+  ❌ X: <span id="xScore">0</span> |
+  ⭕ O: <span id="oScore">0</span> |
+  🤝 Draws: <span id="dScore">0</span>
+</div>
+
+<div id="board">
+  <div id="winLine"></div>
+</div>
+
+<button id="restartBtn">🔄 Restart</button>
+
+<audio id="clickSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+<audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+
+<!-- 🎉 CONFETTI LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script src="script.js"></script>
+</body>
+</html>
