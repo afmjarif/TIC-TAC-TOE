@@ -1,4 +1,4 @@
-# 🎮 Tic Tac Toe Game
+# [🎮 Tic Tac Toe Game](https://afmjarif.github.io/TIC-TAC-TOE/)
 
 A full-stack **Tic Tac Toe web application** built using **Python (Flask), HTML, CSS, JavaScript, and MySQL**.
 This project demonstrates core concepts of **game logic, web development, and database integration**.
