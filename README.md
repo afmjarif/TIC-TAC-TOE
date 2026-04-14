@@ -1,2 +1,3 @@
 # TIC-TAC-TOE
-This game for web development course
+This game is for a web development course
+Play from here: [PLAY](https://afmjarif.github.io/TIC-TAC-TOE/)
