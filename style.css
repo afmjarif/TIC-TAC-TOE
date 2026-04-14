@@ -1,23 +1,102 @@
-const mode = document.getElementById("mode");
-const nameBox = document.getElementById("nameBox");
-const startBtn = document.getElementById("startBtn");
+body {
+  font-family: Arial;
+  margin: 0;
+  background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  color: white;
+  text-align: center;
+}
 
-// show inputs based on mode
-mode.addEventListener("change", () => {
+.container { max-width: 420px; margin: auto; }
 
-  if (mode.value === "") {
-    nameBox.classList.add("hidden");
-    startBtn.disabled = true;
-    return;
-  }
+.screen { display: none; }
+.screen.active { display: block; }
 
-  nameBox.classList.remove("hidden");
-  startBtn.disabled = false;
+button {
+  padding: 12px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #00ffcc;
+  font-weight: bold;
+}
 
-  // hide player2 if CPU mode
-  if (mode.value === "pvp") {
-    document.getElementById("player2").style.display = "block";
-  } else {
-    document.getElementById("player2").style.display = "none";
-  }
-});
+input {
+  padding: 10px;
+  margin: 8px;
+  width: 80%;
+  border-radius: 8px;
+  border: none;
+}
+
+/* BOARD */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 10px;
+  justify-content: center;
+  margin: 20px auto;
+  position: relative;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: #16213e;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.cell:hover { transform: scale(1.05); }
+
+/* WIN */
+.win {
+  background: #00ffcc !important;
+  color: black;
+  animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+/* SHAKE */
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(5px,5px); }
+  50% { transform: translate(-5px,5px); }
+  75% { transform: translate(5px,-5px); }
+  100% { transform: translate(0,0); }
+}
+
+/* WIN LINE */
+.winLine {
+  position: absolute;
+  height: 5px;
+  background: #00ffcc;
+  border-radius: 10px;
+  transform-origin: left center;
+}
+
+/* WIN TEXT */
+.winText {
+  font-size: 26px;
+  color: gold;
+  text-shadow: 0 0 20px gold;
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
